@@ -12,10 +12,13 @@ local Config = {
     Stats = false,
     AntiAFK = false,
     UnlockFPS = false,
+    AntiFling = false,
     BoostSpeed = 0.08
 }
 
--- === СОЗДАНИЕ GUI (КОМПАКТНЫЙ ДИЗАЙН) ===
+local selectedPlayer = nil
+
+-- === СОЗДАНИЕ GUI ===
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "iMe_Menu"
 ScreenGui.Parent = game:GetService("CoreGui")
@@ -27,7 +30,7 @@ MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 MainFrame.BorderSizePixel = 0
 MainFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
-MainFrame.Size = UDim2.new(0, 280, 0, 190)
+MainFrame.Size = UDim2.new(0, 280, 0, 300)
 MainFrame.Active = true
 MainFrame.Draggable = true
 MainFrame.Visible = false
@@ -35,6 +38,13 @@ MainFrame.Visible = false
 local UICorner = Instance.new("UICorner")
 UICorner.CornerRadius = UDim.new(0, 8)
 UICorner.Parent = MainFrame
+
+-- RGB-рамка
+local stroke = Instance.new("UIStroke")
+stroke.Parent = MainFrame
+stroke.Thickness = 2
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+stroke.Color = Color3.fromRGB(255, 100, 200)
 
 -- Заголовок
 local Title = Instance.new("TextLabel")
@@ -68,6 +78,9 @@ BurgerCorner.Parent = BurgerButton
 
 BurgerButton.MouseButton1Click:Connect(function()
     MainFrame.Visible = not MainFrame.Visible
+    if not MainFrame.Visible then
+        PlayerListFrame.Visible = false
+    end
 end)
 
 -- Параметры сетки кнопок
@@ -78,7 +91,7 @@ local gapY = 38
 local col1X = 15
 local col2X = 145
 
--- Функция создания обычной кнопки (без кастомной логики)
+-- Функция создания обычной кнопки (ESP, Aim, Boost, Stats)
 local function CreateButton(name, position, toggleKey)
     local btn = Instance.new("TextButton")
     btn.Name = name
@@ -110,13 +123,14 @@ local function CreateButton(name, position, toggleKey)
     return btn
 end
 
--- Создаём 4 обычные кнопки
+-- Обычные переключатели
 CreateButton("Player ESP", UDim2.new(0, col1X, 0, startY), "ESP")
 CreateButton("Aim Look", UDim2.new(0, col2X, 0, startY), "Aim")
 CreateButton("Boost Speed", UDim2.new(0, col1X, 0, startY + gapY), "Boost")
 CreateButton("Stats", UDim2.new(0, col2X, 0, startY + gapY), "Stats")
 
--- ===== КАСТОМНАЯ КНОПКА Anti-AFK =====
+-- ===== КАСТОМНЫЕ КНОПКИ =====
+-- Anti-AFK
 local antiAfkBtn = Instance.new("TextButton")
 antiAfkBtn.Name = "Anti-AFK"
 antiAfkBtn.Parent = MainFrame
@@ -128,11 +142,9 @@ antiAfkBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
 antiAfkBtn.Font = Enum.Font.Gotham
 antiAfkBtn.TextSize = 13
 antiAfkBtn.BorderSizePixel = 0
-local antiAfkCorner = Instance.new("UICorner")
-antiAfkCorner.CornerRadius = UDim.new(0, 5)
-antiAfkCorner.Parent = antiAfkBtn
+Instance.new("UICorner", antiAfkBtn).CornerRadius = UDim.new(0, 5)
 
--- ===== КАСТОМНАЯ КНОПКА Unlock FPS =====
+-- Unlock FPS
 local unlockFpsBtn = Instance.new("TextButton")
 unlockFpsBtn.Name = "UnlockFPS"
 unlockFpsBtn.Parent = MainFrame
@@ -144,9 +156,68 @@ unlockFpsBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
 unlockFpsBtn.Font = Enum.Font.Gotham
 unlockFpsBtn.TextSize = 13
 unlockFpsBtn.BorderSizePixel = 0
-local unlockFpsCorner = Instance.new("UICorner")
-unlockFpsCorner.CornerRadius = UDim.new(0, 5)
-unlockFpsCorner.Parent = unlockFpsBtn
+Instance.new("UICorner", unlockFpsBtn).CornerRadius = UDim.new(0, 5)
+
+-- Anti-Fling
+local antiFlingBtn = Instance.new("TextButton")
+antiFlingBtn.Name = "AntiFling"
+antiFlingBtn.Parent = MainFrame
+antiFlingBtn.Size = UDim2.new(0, btnWidth, 0, btnHeight)
+antiFlingBtn.Position = UDim2.new(0, col1X, 0, startY + gapY*3)
+antiFlingBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+antiFlingBtn.Text = "Anti-Fling: OFF"
+antiFlingBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+antiFlingBtn.Font = Enum.Font.Gotham
+antiFlingBtn.TextSize = 13
+antiFlingBtn.BorderSizePixel = 0
+Instance.new("UICorner", antiFlingBtn).CornerRadius = UDim.new(0, 5)
+
+-- Player List
+local playerListBtn = Instance.new("TextButton")
+playerListBtn.Name = "PlayerListBtn"
+playerListBtn.Parent = MainFrame
+playerListBtn.Size = UDim2.new(0, btnWidth, 0, btnHeight)
+playerListBtn.Position = UDim2.new(0, col2X, 0, startY + gapY*3)
+playerListBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+playerListBtn.Text = "Player List"
+playerListBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+playerListBtn.Font = Enum.Font.Gotham
+playerListBtn.TextSize = 13
+playerListBtn.BorderSizePixel = 0
+Instance.new("UICorner", playerListBtn).CornerRadius = UDim.new(0, 5)
+
+-- Teleport
+local teleportBtn = Instance.new("TextButton")
+teleportBtn.Name = "TeleportBtn"
+teleportBtn.Parent = MainFrame
+teleportBtn.Size = UDim2.new(0, btnWidth, 0, btnHeight)
+teleportBtn.Position = UDim2.new(0, col1X, 0, startY + gapY*4)
+teleportBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+teleportBtn.Text = "Teleport"
+teleportBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+teleportBtn.Font = Enum.Font.Gotham
+teleportBtn.TextSize = 13
+teleportBtn.BorderSizePixel = 0
+Instance.new("UICorner", teleportBtn).CornerRadius = UDim.new(0, 5)
+
+-- Фрейм списка игроков (дочерний MainFrame)
+local PlayerListFrame = Instance.new("Frame")
+PlayerListFrame.Name = "PlayerListFrame"
+PlayerListFrame.Parent = MainFrame
+PlayerListFrame.Size = UDim2.new(0, 150, 0, 200)
+PlayerListFrame.Position = UDim2.new(1, 5, 0, 0)
+PlayerListFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+PlayerListFrame.BorderSizePixel = 0
+PlayerListFrame.Visible = false
+Instance.new("UICorner", PlayerListFrame).CornerRadius = UDim.new(0, 6)
+
+local listScrolling = Instance.new("ScrollingFrame")
+listScrolling.Name = "ScrollingFrame"
+listScrolling.Parent = PlayerListFrame
+listScrolling.Size = UDim2.new(1, 0, 1, 0)
+listScrolling.CanvasSize = UDim2.new(0, 0, 0, 0)
+listScrolling.ScrollBarThickness = 6
+listScrolling.BackgroundTransparency = 1
 
 -- Метка для FPS и пинга
 local StatsLabel = Instance.new("TextLabel")
@@ -191,7 +262,6 @@ end
 -- Функция разблокировки FPS
 local function applyFPSUnlock()
     if Config.UnlockFPS then
-        -- Пытаемся разблокировать FPS до максимума (10000)
         local success = false
         if setfpscap then
             pcall(function() setfpscap(10000) success = true end)
@@ -203,15 +273,13 @@ local function applyFPSUnlock()
             pcall(function() RunService:SetFrameRateCap(10000) success = true end)
         end
         if not success then
-            warn("Не удалось разблокировать FPS — экзекутор не поддерживает нужные функции.")
-            -- Возвращаем настройку в OFF, так как разблокировка не сработала
+            warn("Не удалось разблокировать FPS")
             Config.UnlockFPS = false
             unlockFpsBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
             unlockFpsBtn.Text = "Unlock FPS: OFF"
             unlockFpsBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
         end
     else
-        -- Возвращаем стандартный лимит 60
         pcall(function()
             if setfpscap then setfpscap(60)
             elseif settings and settings().Rendering then settings().Rendering.FrameRateCap = 60
@@ -220,7 +288,7 @@ local function applyFPSUnlock()
     end
 end
 
--- Обработчик кнопки Anti-AFK
+-- Обработчики кастомных кнопок
 antiAfkBtn.MouseButton1Click:Connect(function()
     Config.AntiAFK = not Config.AntiAFK
     if Config.AntiAFK then
@@ -239,7 +307,6 @@ antiAfkBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- Обработчик кнопки Unlock FPS
 unlockFpsBtn.MouseButton1Click:Connect(function()
     Config.UnlockFPS = not Config.UnlockFPS
     if Config.UnlockFPS then
@@ -254,9 +321,77 @@ unlockFpsBtn.MouseButton1Click:Connect(function()
     applyFPSUnlock()
 end)
 
--- === ЛОГИКА ФУНКЦИЙ ===
+antiFlingBtn.MouseButton1Click:Connect(function()
+    Config.AntiFling = not Config.AntiFling
+    if Config.AntiFling then
+        antiFlingBtn.BackgroundColor3 = Color3.fromRGB(70, 130, 70)
+        antiFlingBtn.Text = "Anti-Fling: ON"
+        antiFlingBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    else
+        antiFlingBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+        antiFlingBtn.Text = "Anti-Fling: OFF"
+        antiFlingBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+    end
+end)
 
--- ESP (Highlight)
+-- Заполнение списка игроков с DisplayName
+local function updatePlayerList()
+    for _, child in ipairs(listScrolling:GetChildren()) do
+        if child:IsA("TextButton") then child:Destroy() end
+    end
+    local yOffset = 0
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p ~= lp then
+            local display = "@" .. p.Name
+            if p.DisplayName ~= p.Name then
+                display = display .. " (" .. p.DisplayName .. ")"
+            end
+            local btn = Instance.new("TextButton")
+            btn.Name = p.Name
+            btn.Parent = listScrolling
+            btn.Size = UDim2.new(1, -10, 0, 28)
+            btn.Position = UDim2.new(0, 5, 0, yOffset)
+            btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+            btn.Text = display
+            btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+            btn.Font = Enum.Font.Gotham
+            btn.TextSize = 13
+            btn.BorderSizePixel = 0
+            Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
+            btn.MouseButton1Click:Connect(function()
+                selectedPlayer = p
+                for _, b in ipairs(listScrolling:GetChildren()) do
+                    if b:IsA("TextButton") then b.BackgroundColor3 = Color3.fromRGB(50, 50, 50) end
+                end
+                btn.BackgroundColor3 = Color3.fromRGB(70, 130, 70)
+                teleportBtn.Text = "TP to " .. p.Name
+            end)
+            yOffset += 32
+        end
+    end
+    listScrolling.CanvasSize = UDim2.new(0, 0, 0, math.max(yOffset, 200))
+end
+
+playerListBtn.MouseButton1Click:Connect(function()
+    PlayerListFrame.Visible = not PlayerListFrame.Visible
+    if PlayerListFrame.Visible then
+        updatePlayerList()
+    end
+end)
+
+teleportBtn.MouseButton1Click:Connect(function()
+    if not selectedPlayer then return end
+    local targetChar = selectedPlayer.Character
+    if not targetChar or not targetChar:FindFirstChild("HumanoidRootPart") then
+        warn("Игрок не загружен или вне игры")
+        return
+    end
+    local myChar = lp.Character
+    if not myChar or not myChar:FindFirstChild("HumanoidRootPart") then return end
+    myChar.HumanoidRootPart.CFrame = CFrame.new(targetChar.HumanoidRootPart.Position + Vector3.new(0, 2, 0))
+end)
+
+-- === ЛОГИКА ФУНКЦИЙ ===
 local function updateESP()
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= lp and p.Character then
@@ -274,7 +409,6 @@ local function updateESP()
     end
 end
 
--- Основной цикл
 RunService.RenderStepped:Connect(function()
     updateESP()
     
@@ -288,7 +422,7 @@ RunService.RenderStepped:Connect(function()
         hrp.CFrame = hrp.CFrame + (hum.MoveDirection * Config.BoostSpeed)
     end
 
-    -- Aim Look (мгновенный разворот на ближайшего врага)
+    -- Aim Look
     if Config.Aim then
         local target = nil
         local dist = math.huge
@@ -302,22 +436,37 @@ RunService.RenderStepped:Connect(function()
             end
         end
         if target then
-            local targetHrp = target.Character.HumanoidRootPart
-            local targetPos = targetHrp.Position
-            local lookAt = CFrame.lookAt(hrp.Position, Vector3.new(targetPos.X, hrp.Position.Y, targetPos.Z))
-            hrp.CFrame = lookAt
+            local targetPos = target.Character.HumanoidRootPart.Position
+            hrp.CFrame = CFrame.lookAt(hrp.Position, Vector3.new(targetPos.X, hrp.Position.Y, targetPos.Z))
         end
     end
 
-    -- FPS и Ping обновление
+    -- Anti-Fling
+    if Config.AntiFling then
+        if hum.MoveDirection.Magnitude == 0 then
+            hrp.Velocity = Vector3.new(0, hrp.Velocity.Y, 0)
+            hrp.RotVelocity = Vector3.new(0, hrp.RotVelocity.Y, 0)
+        end
+    end
+
+    -- RGB-рамка
+    if MainFrame.Visible then
+        local t = tick()
+        local r = 127 + 127 * math.sin(t * 0.8)
+        local g = 127 + 127 * math.sin(t * 0.6 + 2)
+        local b = 127 + 127 * math.sin(t * 0.7 + 4)
+        stroke.Color = Color3.fromRGB(r, g, b)
+    end
+
+    -- FPS и Ping
     local now = tick()
     if Config.Stats then
         StatsLabel.Visible = true
         if now - lastStatsUpdate >= 0.01 then
             local delta = now - lastFrameTime
-            local currentFps = (delta > 0) and (1 / delta) or 60
+            local fps = (delta > 0) and (1 / delta) or 60
             local ping = lp:GetNetworkPing() * 1000
-            StatsLabel.Text = string.format("FPS: %.3f | Ping: %.3f ms", currentFps, ping)
+            StatsLabel.Text = string.format("FPS: %.3f | Ping: %.3f ms", fps, ping)
             lastStatsUpdate = now
         end
     else
@@ -326,7 +475,7 @@ RunService.RenderStepped:Connect(function()
     lastFrameTime = now
 end)
 
--- Плавное перемещение меню
+-- Перемещение меню
 local dragging, dragInput, dragStart, startPos
 local function update(input)
     local delta = input.Position - dragStart
@@ -351,6 +500,6 @@ UserInputService.InputChanged:Connect(function(input)
     if input == dragInput and dragging then update(input) end
 end)
 
--- Инициализация при старте (на случай, если конфиг изменится до запуска)
+-- Инициализация
 if Config.AntiAFK then startAntiAFK() end
 if Config.UnlockFPS then applyFPSUnlock() end
