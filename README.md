@@ -42,3 +42,7 @@
   <img src="https://github-readme-stats.vercel.app/api?username=Artem3107&show_icons=true&theme=dark&hide_border=true" width="48%" alt="Stats" />
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Artem3107&layout=compact&theme=dark&hide_border=true" width="48%" alt="Languages" />
 </p>
+
+<p align="center">
+  <img src="https://streak-stats.demolab.com?user=Artem3107&theme=dark&hide_border=true" width="100%" alt="Streak Stats" />
+</p>
