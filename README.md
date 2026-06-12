@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://ishan-rest.vercel.app/svg/banner/dev/Artem3107" alt="Developer Banner" width="100%" />
+</p>
+
 # ⚡ ERROR 404: Sleep Not Found ⚡
 
 <p align="center">
@@ -7,10 +11,8 @@
 </p>
 
 <p align="center">
-  <!-- Видимый бейдж в стиле 6 (синий цвет) с твоим уникальным тегом -->
   <img src="https://dynamic-repo-badges.vercel.app/svg/count/6/PROFILE%20VIEWS/Artem3107-profile" alt="Views" />
   
-  <!-- Хакерский невидимый пиксель-трекер для автоматического обновления просмотров -->
   <img src="https://dynamic-repo-badges.vercel.app/update_views/Artem3107-profile" width="1" height="1" style="opacity: 0; position: absolute;" alt="" />
 </p>
 
