@@ -7,17 +7,20 @@
 </p>
 
 <p align="center">
-  <!-- Бронебойный счетчик просмотров, который не упадет -->
-  <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FArtem3107&count_bg=%2379C0FF&title_bg=%23555555&title=PROFILE+VIEWS&edge_flat=true" alt="Views" />
+  <!-- Видимый бейдж в стиле 6 (синий цвет) с твоим уникальным тегом -->
+  <img src="https://dynamic-repo-badges.vercel.app/svg/count/6/PROFILE%20VIEWS/Artem3107-profile" alt="Views" />
+  
+  <!-- Хакерский невидимый пиксель-трекер для автоматического обновления просмотров -->
+  <img src="https://dynamic-repo-badges.vercel.app/update_views/Artem3107-profile" width="1" height="1" style="opacity: 0; position: absolute;" alt="" />
 </p>
 
 ---
 
 ### 👤 ABOUT ME
 
-*   *Name:* Artem (aka Artem3107)
-*   *Focus:* Reverse Engineering, Memory Injection & Lua Scripting.
-*   *Mission:* Analyzing games security systems and writing bypasses that actually work.
+*   **Name:** Artem (aka Artem3107)
+*   **Focus:** Reverse Engineering, Memory Injection & Lua Scripting.
+*   **Mission:** Analyzing games security systems and writing bypasses that actually work.
 
 ---
 
