@@ -18,10 +18,11 @@
 
 ### 🛠️ TECH STACK & TOOLS
 
-text
+<pre>
 [+] Languages:    Lua, C++, Python
 [+] Environment:  Termux (Android Linux), Neovim, Git
 [+] Focus:        Roblox Client-Side Exploitation, Script Execution, Bytecode Bypass
+</pre>
 
 ---
 
