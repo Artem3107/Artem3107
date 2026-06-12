@@ -29,7 +29,7 @@
 
 📊 MY GITHUB STATS
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Ainum1&showicons=true&theme=dark&hideborder=true" alt="Stats" />
+  <img src="https://github-readme-stats.vercel.app/api?username=Artem3107&showicons=true&theme=dark&hideborder=true" alt="Stats" />
 </p>
 
 ---
