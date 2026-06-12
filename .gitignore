@@ -39,3 +39,15 @@ luac.out
 *.x86_64
 *.hex
 
+# Временные файлы Neovim/Vim
+*.swp
+*.swo
+*~
+
+# Логи и отчеты об ошибках
+*.log
+crashdump.txt
+
+# Системные файлы Android/OS
+.DS_Store
+Thumbs.db
