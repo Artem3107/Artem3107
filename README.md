@@ -7,17 +7,17 @@
 </p>
 
 <p align="center">
-  <!-- Новый неубиваемый счетчик просмотров -->
-  <img src="https://profile-counter.glitch.me/Artem3107/count.svg" alt="Profile Views" />
+  <!-- Бронебойный счетчик просмотров, который не упадет -->
+  <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FArtem3107&count_bg=%2379C0FF&title_bg=%23555555&title=PROFILE+VIEWS&edge_flat=true" alt="Views" />
 </p>
 
 ---
 
 ### 👤 ABOUT ME
 
-*   **Name:** Artem (aka Artem3107)
-*   **Focus:** Reverse Engineering, Memory Injection & Lua Scripting.
-*   **Mission:** Analyzing games security systems and writing bypasses that actually work.
+*   *Name:* Artem (aka Artem3107)
+*   *Focus:* Reverse Engineering, Memory Injection & Lua Scripting.
+*   *Mission:* Analyzing games security systems and writing bypasses that actually work.
 
 ---
 
