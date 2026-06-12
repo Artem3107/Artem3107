@@ -7,8 +7,8 @@
 </p>
 
 <p align="center">
-  <!-- Счетчик просмотров профиля -->
-  <img src="https://komarev.com/normal-adebiy/badge.svg?username=Artem3107&color=blueviolet&style=flat-square&label=PROFILE+VIEWS" alt="Artem3107" />
+  <!-- Новый неубиваемый счетчик просмотров -->
+  <img src="https://profile-counter.glitch.me/Artem3107/count.svg" alt="Profile Views" />
 </p>
 
 ---
@@ -28,14 +28,6 @@
 [+] Environment:  Termux (Android Linux), Neovim, Git
 [+] Focus:        Roblox Client-Side Exploitation, Script Execution, Bytecode Bypass
 </pre>
-
----
-
-### 🏆 GITHUB TROPHIES
-
-<p align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=Artem3107&theme=onedark&column=4&margin-w=15&margin-h=15" alt="Trophies" />
-</p>
 
 ---
 
